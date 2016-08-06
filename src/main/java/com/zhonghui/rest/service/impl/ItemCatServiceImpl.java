@@ -61,6 +61,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 				catNode.setItem(getCatList(tbItemCat.getId()));
 				resultList.add(catNode);
 				count++;
+				// 限于版面限制，第一层只取14条记录
 				if(parentId == 0 && count >= 14) {
 					break;
 				}
