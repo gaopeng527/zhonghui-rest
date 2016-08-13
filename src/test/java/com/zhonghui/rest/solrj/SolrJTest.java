@@ -1,7 +1,11 @@
 package com.zhonghui.rest.solrj;
 
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
 
@@ -35,5 +39,28 @@ public class SolrJTest {
 		// 方法二、按查询条件删除
 		solrServer.deleteByQuery("*:*");
 		solrServer.commit();
+	}
+	
+	@Test
+	public void queryDocument() throws Exception {
+		// 创建一个连接
+		SolrServer solrServer = new HttpSolrServer("http://192.168.56.128:8080/solr-4.10.3");
+		// 创建一个查询对象
+		SolrQuery query = new SolrQuery();
+		// 设置查询条件
+		query.setQuery("*:*");
+		query.setStart(20);
+		query.setRows(50);
+		// 执行查询
+		QueryResponse response = solrServer.query(query);
+		// 取查询结果
+		SolrDocumentList solrDocumentList = response.getResults();
+		System.out.println("共查询到记录："+solrDocumentList.getNumFound());
+		for(SolrDocument document : solrDocumentList){
+			System.out.println(document.get("id"));
+			System.out.println(document.get("item_title"));
+			System.out.println(document.get("item_price"));
+			System.out.println(document.get("item_image"));
+		}
 	}
 }
