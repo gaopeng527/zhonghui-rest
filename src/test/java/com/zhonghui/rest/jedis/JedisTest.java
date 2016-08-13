@@ -3,6 +3,8 @@ package com.zhonghui.rest.jedis;
 import java.util.HashSet;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
@@ -51,6 +53,34 @@ public class JedisTest {
 		nodes.add(new HostAndPort("192.168.56.128", 7005));
 		nodes.add(new HostAndPort("192.168.56.128", 7006));
 		JedisCluster cluster = new JedisCluster(nodes);
+		cluster.set("key1", "1000");
+		String string = cluster.get("key1");
+		System.out.println(string);
+		cluster.close();
+	}
+	
+	/**
+	 * 采用sping管理jedisPool单机版测试
+	 */
+	@Test
+	public void testSpringJedisSingle(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-*.xml");
+		JedisPool pool = (JedisPool) applicationContext.getBean("redisClient");
+		Jedis jedis = pool.getResource();
+		jedis.set("key1", "1000");
+		String string = jedis.get("key1");
+		System.out.println(string);
+		jedis.close();
+		pool.close();
+	}
+	
+	/**
+	 * Spring管理JedisCluster测试
+	 */
+	@Test
+	public void testSpringJedisCluster(){
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-*.xml");
+		JedisCluster cluster = (JedisCluster) applicationContext.getBean("redisClient");
 		cluster.set("key1", "1000");
 		String string = cluster.get("key1");
 		System.out.println(string);
