@@ -20,10 +20,19 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 	
+	// 商品基本信息
 	@RequestMapping("/info/{itemId}")
 	@ResponseBody
 	public ZhonghuiResult getItemBaseInfo(@PathVariable Long itemId){
 		ZhonghuiResult result = itemService.getItemBaseInfo(itemId);
+		return result;
+	}
+	
+	// 商品描述信息
+	@RequestMapping("/desc/{itemId}")
+	@ResponseBody
+	public ZhonghuiResult getItemDesc(@PathVariable Long itemId){
+		ZhonghuiResult result = itemService.getItemDesc(itemId);
 		return result;
 	}
 }
