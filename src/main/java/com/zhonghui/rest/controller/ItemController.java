@@ -35,4 +35,12 @@ public class ItemController {
 		ZhonghuiResult result = itemService.getItemDesc(itemId);
 		return result;
 	}
+	
+	// 商品规格信息
+	@RequestMapping("/param/{itemId}")
+	@ResponseBody
+	public ZhonghuiResult getItemParam(@PathVariable Long itemId){
+		ZhonghuiResult result = itemService.getItemParam(itemId);
+		return result;
+	}
 }
